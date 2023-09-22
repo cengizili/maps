@@ -28,7 +28,7 @@ jobs:
 
     env:
       # Replace $PROJECT_ID with your project ID
-      IMAGE_NAME: gcr.io/instagenie-7cc10/maps
+      IMAGE_NAME: gcr.io/instagenie-7cc10/mapss
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -59,7 +59,7 @@ jobs:
         with:
           image: ${{ env.IMAGE_NAME }}
           region: us-central1
-          service: maps
+          service: mapss
           flags: --port=8080
 
       # Example of using the output
