@@ -40,9 +40,9 @@ jobs:
         uses: google-github-actions/auth@v0
         with:
           # Replace with your Workload Identity Provider Location
-          workload_identity_provider: "projects/660579660395/locations/global/workloadIdentityPools/gh-pool-maps/providers/gh-provider-maps"
+          workload_identity_provider: "projects/660579660395/locations/global/workloadIdentityPools/gh-pool-mapss/providers/gh-provider-mapss"
           # Replace with your GitHub Service Account
-          service_account: "github-actions-service-maps@instagenie-7cc10.iam.gserviceaccount.com"
+          service_account: "github-actions-service-mapss@instagenie-7cc10.iam.gserviceaccount.com"
 
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
