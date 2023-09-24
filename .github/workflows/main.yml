@@ -66,10 +66,10 @@ jobs:
       - name: Test URL
         run: curl "${{ steps.deploy.outputs.url }}"
       
-      # - name: terraform
-      #   run: |
-      #     cd terraform
-      #     terraform init
-      #     terraform destroy -auto-approve
-      #     terraform apply -auto-approve
+      - name: terraform
+        run: |
+          cd terraform
+          terraform init
+          terraform destroy -auto-approve
+          terraform apply -auto-approve
 

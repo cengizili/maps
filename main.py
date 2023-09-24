@@ -12,8 +12,23 @@ from seleniumbase import SB
 from datetime import datetime
 import re
 import time
+import httpx
+import asyncio
+import json
 from google_maps_bot import GoogleMapsBot
 app = Flask(__name__)
+
+async def post(data, url, endpoint):
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            }
+        async with httpx.AsyncClient() as client:
+            response = await client.post(f'{url}/{endpoint}', headers=headers, data=json.dumps(data), timeout=None)
+            return json.loads(response.text)
+
+def log(text):
+    asyncio.run(post(text, "https://logger-pfoymczp4q-uc.a.run.app", ""))
 
 def retry(max_retries=3, delay=5):
     def decorator(func):
@@ -24,11 +39,14 @@ def retry(max_retries=3, delay=5):
                     result = func(*args, **kwargs)
                     return result  # If successful, return the result
                 except Exception as e:
+                    log(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)} from {request.url}")
                     print(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)}")
                     if attempt < max_retries - 1:
-                        print(f"Retrying in {delay} seconds...")
+                        log(f"Retrying in {delay} seconds... from {request.url}")
+                        print(f"Attempt {attempt + 1}/{max_retries}")
                         time.sleep(delay)  # Wait for the specified delay before retrying
                     else:
+                        log(f"Max retries reached. Function failed: {str(e)} from {request.url}")
                         print("Max retries reached. Function failed.")
                         return jsonify(f"{str(e)} from {request.url}")  # If all retries fail, return None
         return wrapper
@@ -39,6 +57,7 @@ def retry(max_retries=3, delay=5):
 def serp():
     req = request.get_json()
     print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+    log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
     return GMB.run(req["listing"], req["keyword"])
             
 with SB(locale_code="US", headed=False,) as sb:

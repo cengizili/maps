@@ -56,7 +56,7 @@ class GoogleMapsBot:
         self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
         time.sleep(1)
         keyword_count = self.scrape_to_end()
-        listing.update({"keyword_count": keyword_count, "photo_count": photo_count})
+        listing.update({"keywords": {keyword: keyword_count}, "photo_count": photo_count})
         return listing
 
 
