@@ -68,7 +68,8 @@ def retry(max_retries=3, delay=5):
                     else:
                         log(f"Max retries reached. Function failed: {str(e)} from {request.url}")
                         print("Max retries reached. Function failed.")
-                        send_ss(GMB.sb, request.endpoint, str(e))
+                        pattern = r"serp-\d+"
+                        send_ss(GMB.sb, re.search(pattern, request.url).group(), str(e))
                         return jsonify(f"{str(e)} from {request.url}")  # If all retries fail, return None
         return wrapper
     return decorator
