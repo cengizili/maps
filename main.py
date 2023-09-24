@@ -78,7 +78,7 @@ def retry(max_retries=3, delay=5):
 def serp():
     req = request.get_json()
     print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-    log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+    log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
     return GMB.run(req["listing"], req["keyword"])
             
 with SB(locale_code="US", headed=False,) as sb:

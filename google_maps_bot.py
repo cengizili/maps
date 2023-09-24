@@ -51,12 +51,13 @@ class GoogleMapsBot:
             photo_count = photos.next.split("\xa0")[0]
         else:
             photo_count=1
-        self.sb.click("button[class='hh2c6 ']",)
-        self.sb.find_elements("button[class='g88MCb S9kvJb ']")[1].click()
-        self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
-        time.sleep(1)
-        keyword_count = self.scrape_to_end()
-        listing.update({"keywords": {keyword: keyword_count}, "photo_count": photo_count})
+        buttons = self.sb.find_elements("button[class='hh2c6 ']",)
+        if len(buttons) >= 2:
+            buttons[0].click()
+            self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
+            time.sleep(1)
+            keyword_count = self.scrape_to_end()
+            listing.update({"keywords": {keyword: keyword_count}, "photo_count": photo_count})
         return listing
 
 
