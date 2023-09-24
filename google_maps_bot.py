@@ -54,6 +54,7 @@ class GoogleMapsBot:
         buttons = self.sb.find_elements("button[class='hh2c6 ']",)
         if len(buttons) >= 2:
             buttons[0].click()
+            self.sb.find_elements("button[class='g88MCb S9kvJb ']")[1].click()
             self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
             time.sleep(1)
             keyword_count = self.scrape_to_end()
