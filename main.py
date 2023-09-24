@@ -9,17 +9,10 @@ import os
 import base64
 from fake_useragent import UserAgent
 from seleniumbase import SB
-from google_maps_bot import GoogleMapsBot
 from datetime import datetime
 import re
 import time
-import gmaps as gmaps
-
-def extract_alphanumeric(input_string):
-    # Use regular expression to find alphanumeric characters
-    alphanumeric = re.sub(r'[^a-zA-Z0-9]', ' ', input_string)
-    return alphanumeric
-
+from google_maps_bot import GoogleMapsBot
 app = Flask(__name__)
 
 def retry(max_retries=3, delay=5):
@@ -37,17 +30,16 @@ def retry(max_retries=3, delay=5):
                         time.sleep(delay)  # Wait for the specified delay before retrying
                     else:
                         print("Max retries reached. Function failed.")
-                        print(str(e))
-                        return jsonify([])  # If all retries fail, return None
+                        return jsonify(f"{str(e)} from {request.url}")  # If all retries fail, return None
         return wrapper
     return decorator
 
 @app.route("/serp", methods=['POST'])
-@retry(max_retries=1, delay=0)
-def seo():
+@retry(max_retries=3, delay=5)
+def serp():
     req = request.get_json()
     print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-    return jsonify(GMB.run(req["listing"], req["keyword"]))
+    return GMB.run(req["listing"], req["keyword"])
             
 with SB(locale_code="US", headed=False,) as sb:
     GMB = GoogleMapsBot(sb)
