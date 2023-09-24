@@ -16,6 +16,7 @@ resource "google_cloud_run_service" "default" {
 
   template {
     spec {
+      container_concurrency = 1
       containers {
         image = "gcr.io/instagenie-7cc10/mapss"
         resources {

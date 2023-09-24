@@ -16,7 +16,27 @@ import httpx
 import asyncio
 import json
 from google_maps_bot import GoogleMapsBot
+
 app = Flask(__name__)
+
+cred = credentials.Certificate('firebase_credentials.json')
+
+initialize_app(cred, {
+    'databaseURL': 'https://instagenie-7cc10-default-rtdb.firebaseio.com/'
+})
+
+bucket = storage.bucket('instagenie-7cc10.appspot.com')
+
+def extract_alphanumeric(input_string):
+    # Use regular expression to find alphanumeric characters
+    alphanumeric = re.sub(r'[^a-zA-Z0-9]', ' ', input_string)
+    return alphanumeric
+
+def send_ss(sb, endpoint, e):
+    print(f"{e} from {endpoint}")
+    sb.save_screenshot("ss")
+    path = f'{endpoint}/{datetime.now().strftime("%Y-%m-%d")}/{extract_alphanumeric(e)}/{datetime.now().strftime("%H:%M:%S")}'
+    bucket.blob(path).upload_from_filename("ss.png")
 
 async def post(data, url, endpoint):
         headers = {
@@ -48,12 +68,13 @@ def retry(max_retries=3, delay=5):
                     else:
                         log(f"Max retries reached. Function failed: {str(e)} from {request.url}")
                         print("Max retries reached. Function failed.")
+                        send_ss(GMB.sb, request.endpoint, str(e))
                         return jsonify(f"{str(e)} from {request.url}")  # If all retries fail, return None
         return wrapper
     return decorator
 
 @app.route("/serp", methods=['POST'])
-@retry(max_retries=3, delay=5)
+@retry(max_retries=3, delay=2)
 def serp():
     req = request.get_json()
     print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
