@@ -24,31 +24,23 @@ class GoogleMapsBot:
         scroller = self.sb.find_element("div[class='m6QErb DxyBCb kA9KIf dS8AEf ']")
         self.sb.execute_script("arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].offsetHeight;", scroller)
         time.sleep(0.5)
-
-    def scheduled_scrape(self, run_seconds): 
-        start = time.time()
-        users = []
-        while time.time() < start + run_seconds:
-            buttons = self.soup.find_all(lambda tag: tag.name == 'button' and 'al6Kxe' in tag.get('class', []))
-            allUsers = [i.next.next for i in buttons]
-            divs = self.soup.find_all(lambda tag: tag.name == 'div' and 'DU9Pgb' in tag.get('class', []))
-            rates = [i.next.attrs["aria-label"][0] for i in divs]
-            users.extend([u for idx, u in enumerate(allUsers) if rates[idx]=='5' and isinstance(u, str)])
-            self.scroll_pop_up()
-        return list(set(users))
-
-    def run(self, directUrl):
-        self.sb.open_new_window(switch_to=True)
-        self.sb.get(directUrl)
-        # self.sb.save_screenshot("ss")
-        self.sb.click_if_visible("button[class='VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc LQeN7 Nc7WLe']", timeout=8)
-        self.sb.click("button[class='hh2c6 ']",)
-        self.sb.click('button[data-value="Trier"]')
-        self.sb.find_element('div[class="fxNQSd"]').send_keys(Keys.ARROW_DOWN, Keys.RETURN)
-        time.sleep(1)
-        return self.scheduled_scrape(15)
     
-    def run2(self, listing):
+    def scrape_to_end(self):
+        next = 0
+        while True:
+            prev = next
+            self.scroll_along(5)
+            next = len(self.soup.find_all(lambda tag: tag.name == 'div' and 'DU9Pgb' in tag.get('class', [])))
+            if prev == next:
+                break
+        return next
+
+    def scroll_along(self, run_seconds): 
+        start = time.time()
+        while time.time() < start + run_seconds:
+            self.scroll_pop_up()
+
+    def run(self, listing, keyword):
         self.sb.open_new_window(switch_to=True)
         self.sb.get(listing["url"])
         # self.sb.save_screenshot("ss")
@@ -61,10 +53,11 @@ class GoogleMapsBot:
             photo_count=1
         self.sb.click("button[class='hh2c6 ']",)
         self.sb.find_elements("button[class='g88MCb S9kvJb ']")[1].click()
-        self.sb.find_element("input[type='text']",).send_keys("şahane", Keys.ENTER)
+        self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
         time.sleep(1)
-        keyword_count = len(self.soup.find_all(lambda tag: tag.name == 'div' and 'DU9Pgb' in tag.get('class', [])))
-        return {"directUrl": [keyword_count, photo_count]}
+        keyword_count = self.scrape_to_end()
+        listing.update({"keyword_count": keyword_count, "photo_count": photo_count})
+        return listing
 
 
 

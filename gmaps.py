@@ -58,7 +58,7 @@ def real_locations(params):
     loc = place_details["candidates"][0]["geometry"]["location"]
     return loc["lat"], loc["lng"]
 
-def get_listings(short_url, zoom_level):
+def get_listings(short_url, radius):
     lat,lng = real_locations(extractor(short_url))
     token = None
     listings = []
@@ -67,8 +67,8 @@ def get_listings(short_url, zoom_level):
         token = desirable_places.get("next_page_token", None)
         listings.extend(sorted(desirable_places["results"], key=lambda item: sort_key(item, lat, lng)))
         time.sleep(2)
-        if listings[-1]["distance_meters"]>=200*(2**(20-zoom_level)) or token==None:
-            return listings
+        if listings[-1]["distance_meters"]>=radius or token==None:
+            return [l for l in listings if l["distance_meters"]<=radius]
         
 # lt = get_listings('https://goo.gl/maps/8jbwbWnu6uKqM1q7A', 15)
 # pass
