@@ -71,8 +71,8 @@ def retry(max_retries=3, delay=5):
                         log(f"Max retries reached. Function failed: {str(e)} from {request.url}")
                         print("Max retries reached. Function failed.")
                         pattern = r"serp-\d+"
-                        send_ss(GMB.sb, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         req = request.get_json()
+                        send_ss(GMB.sb, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         l = req["listing"]
                         l.update({req["keyword"]: 0})
                         return l  # If all retries fail, return None
