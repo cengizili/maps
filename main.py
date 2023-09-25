@@ -32,11 +32,12 @@ def extract_alphanumeric(input_string):
     alphanumeric = re.sub(r'[^a-zA-Z0-9]', ' ', input_string)
     return alphanumeric
 
-def send_ss(sb, endpoint, e):
+def send_ss(sb, logDate, endpoint, url, e):
     print(f"{e} from {endpoint}")
     sb.save_screenshot("ss")
-    path = f'{endpoint}/{datetime.now().strftime("%Y-%m-%d")}/{extract_alphanumeric(e)}/{datetime.now().strftime("%H:%M:%S")}'
+    path = f'{logDate}/{endpoint}/{extract_alphanumeric(e)}'
     bucket.blob(path).upload_from_filename("ss.png")
+    bucket.blob(path).upload_from_string(url)
 
 async def post(data, url, endpoint):
         headers = {
@@ -70,7 +71,7 @@ def retry(max_retries=3, delay=5):
                         log(f"Max retries reached. Function failed: {str(e)} from {request.url}")
                         print("Max retries reached. Function failed.")
                         pattern = r"serp-\d+"
-                        send_ss(GMB.sb, re.search(pattern, request.url).group(), str(e))
+                        send_ss(GMB.sb, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         req = request.get_json()
                         l = req["listing"]
                         l.update({req["keyword"]: 0})
