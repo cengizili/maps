@@ -57,6 +57,7 @@ def retry(max_retries=3, delay=5):
             for attempt in range(max_retries):
                 try:
                     result = func(*args, **kwargs)
+                    log(f"Successful! {request.url}")
                     return result  # If successful, return the result
                 except Exception as e:
                     log(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)} from {request.url}")
