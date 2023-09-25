@@ -70,7 +70,7 @@ def retry(max_retries=3, delay=5):
                         print("Max retries reached. Function failed.")
                         pattern = r"serp-\d+"
                         send_ss(GMB.sb, re.search(pattern, request.url).group(), str(e))
-                        return jsonify(f"{str(e)} from {request.url}")  # If all retries fail, return None
+                        return None  # If all retries fail, return None
         return wrapper
     return decorator
 
@@ -78,8 +78,8 @@ def retry(max_retries=3, delay=5):
 @retry(max_retries=3, delay=2)
 def serp():
     req = request.get_json()
-    print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-    log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
+    # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+    # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
     return GMB.run(req["listing"], req["keyword"])
             
 with SB(locale_code="US", headed=False,) as sb:
