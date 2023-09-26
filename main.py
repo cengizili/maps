@@ -59,7 +59,7 @@ def retry(max_retries=3, delay=5):
                 try:
                     result = func(*args, **kwargs)
                     log(f"Successful! {request.url}")
-                    return result  # If successful, return the result
+                    return jsonify(result)  # If successful, return the result
                 except Exception as e:
                     log(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)} from {request.url}")
                     print(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)}")
@@ -75,7 +75,7 @@ def retry(max_retries=3, delay=5):
                         send_ss(GMB.sb, request.endpoint, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         l = req["listing"]
                         l.update({req["keyword"]: 0})
-                        return l  # If all retries fail, return None
+                        return jsonify(l)  # If all retries fail, return None
         return wrapper
     return decorator
 
