@@ -21,7 +21,7 @@ resource "google_cloud_run_service" "default" {
         image = "gcr.io/instagenie-7cc10/mapss"
         resources {
             limits = {
-                cpu = "1000m" # 1 vCPU
+                cpu = "2000m" # 1 vCPU
                 memory = "2Gi"
             }
         }

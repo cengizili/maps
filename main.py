@@ -37,7 +37,7 @@ def send_ss(sb, logDate, endpoint, url, e):
     sb.save_screenshot("ss")
     path = f'{logDate}/{endpoint}/{extract_alphanumeric(e)}'
     bucket.blob(path).upload_from_filename("ss.png")
-    bucket.blob(path).upload_from_string(url)
+    bucket.blob(path).metadata = url
 
 async def post(data, url, endpoint):
         headers = {
@@ -79,13 +79,21 @@ def retry(max_retries=3, delay=5):
         return wrapper
     return decorator
 
-@app.route("/serp", methods=['POST'])
+@app.route("/keyword_search", methods=['POST'])
 @retry(max_retries=3, delay=2)
-def serp():
+def keyword_search():
     req = request.get_json()
     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-    return GMB.run(req["listing"], req["keyword"])
+    return GMB.keyword_search(req["listing"], req["keyword"])
+
+@app.route("/place_search", methods=['POST'])
+@retry(max_retries=2, delay=2)
+def place_search():
+    req = request.get_json()
+    # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+    # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
+    return GMB.place_search(req["zoomUrl"])
             
 with SB(locale_code="US", headed=False,) as sb:
     GMB = GoogleMapsBot(sb)

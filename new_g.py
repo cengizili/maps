@@ -284,7 +284,7 @@ if __name__ == "__main__":
     else:
         # in case no arguments passed
         # the scraper will search by defaukt for:
-        search_url = "https://goo.gl/maps/8jbwbWnu6uKqM1q7A"
+        search_url = "https://maps.app.goo.gl/PxS4rQEsHRo8Ah9d8"
 
     if args.search:
         search_for = args.search
