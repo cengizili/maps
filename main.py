@@ -32,10 +32,10 @@ def extract_alphanumeric(input_string):
     alphanumeric = re.sub(r'[^a-zA-Z0-9]', ' ', input_string)
     return alphanumeric
 
-def send_ss(sb, logDate, endpoint, url, e):
-    print(f"{e} from {endpoint}")
+def send_ss(sb, endpoint, logDate, service, url, e):
+    print(f"{e} from {service}")
     sb.save_screenshot("ss")
-    path = f'{logDate}/{endpoint}/{extract_alphanumeric(e)}'
+    path = f'{logDate}/{endpoint}/{service}/{extract_alphanumeric(e)}'
     bucket.blob(path).upload_from_filename("ss.png")
     bucket.blob(path).metadata = url
 
@@ -72,7 +72,7 @@ def retry(max_retries=3, delay=5):
                         print("Max retries reached. Function failed.")
                         pattern = r"serp-\d+"
                         req = request.get_json()
-                        send_ss(GMB.sb, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
+                        send_ss(GMB.sb, request.endpoint, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         l = req["listing"]
                         l.update({req["keyword"]: 0})
                         return l  # If all retries fail, return None
