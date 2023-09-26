@@ -84,13 +84,13 @@ class GoogleMapsBot:
         photos = self.soup.find('div', class_='YkuOqf')
         extract_number = lambda s: re.search(r'\d+', s).group() if re.search(r'\d+', s) else None
         if photos:
-            photo_count = extract_number(photos.next)
+            photo_count = int(extract_number(photos.next))
         else:
             photo_count=1
         self.sb.click("button[aria-label*='Reviews']",)
         els = self.sb.find_elements("button[class='e2moi ']")
         extra_keywords = {extract(e.accessible_name)[0]: extract(e.accessible_name)[1] for e in els}
-        extra_keywords = {k:v for k,v in extra_keywords.items() if k and v}
+        extra_keywords = {k:int(v) for k,v in extra_keywords.items() if k and v}
         self.sb.find_elements("button[class='g88MCb S9kvJb ']")[1].click()
         time.sleep(1)
         self.sb.find_element("input[type='text']",).send_keys(keyword, Keys.ENTER)
