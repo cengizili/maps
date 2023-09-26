@@ -93,7 +93,7 @@ def place_search():
     req = request.get_json()
     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-    return GMB.place_search(req["zoomUrl"])
+    return GMB.place_search(req["zoomUrl"], req["placeLimit"])
             
 with SB(locale_code="US", headed=False,) as sb:
     GMB = GoogleMapsBot(sb)

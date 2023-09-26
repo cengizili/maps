@@ -5805,3 +5805,7 @@ functions/venv/Scripts/pythonw.exe
 functions/venv/Scripts/watchmedo.exe
 functions/venv/Scripts/__pycache__/fixup_firestore_admin_v1_keywords.cpython-310.pyc
 functions/venv/Scripts/__pycache__/fixup_firestore_v1_keywords.cpython-310.pyc
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup

@@ -63,15 +63,15 @@ class GoogleMapsBot:
 
     def scroll_along(self): 
         start = time.time()
-        while time.time() < start + 5:
+        while time.time() < start + 3:
             self.scroll_pop_up()
     
-    def place_search(self, zoom_url):
+    def place_search(self, zoom_url, place_limit):
         self.mode = "places"
         self.sb.open_new_window(switch_to=True)
         self.sb.get(zoom_url)
         self.sb.click_if_visible("button[class='VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc LQeN7 Nc7WLe']", timeout=3)
-        places = self.scrape_places_to_limit(5)
+        places = self.scrape_places_to_limit(place_limit)
         return places
 
     def keyword_search(self, listing, keyword):
