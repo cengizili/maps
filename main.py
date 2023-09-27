@@ -37,7 +37,7 @@ def send_ss(sb, endpoint, logDate, service, url, e):
     sb.save_screenshot("ss")
     path = f'{logDate}/{endpoint}/{service}/{extract_alphanumeric(e)}'
     bucket.blob(path).upload_from_filename("ss.png")
-    bucket.blob(path).metadata = url
+    bucket.blob(path).metadata = {"url": url}
 
 async def post(data, url, endpoint):
         headers = {
