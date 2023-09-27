@@ -74,7 +74,7 @@ def retry(max_retries=3, delay=5):
                         req = request.get_json()
                         send_ss(GMB.sb, request.endpoint, req["logDate"], re.search(pattern, request.url).group(), request.url, str(e))
                         l = req["listing"]
-                        l.update({req["keyword"]: 0})
+                        l["keywords"] = {req["keyword"]: 0}
                         return jsonify(l)  # If all retries fail, return None
         return wrapper
     return decorator
