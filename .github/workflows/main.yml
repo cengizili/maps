@@ -28,7 +28,7 @@ jobs:
 
     env:
       # Replace $PROJECT_ID with your project ID
-      IMAGE_NAME: gcr.io/instagenie-7cc10/mapss
+      IMAGE_NAME: gcr.io/speedy-post-400711/app
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -40,9 +40,9 @@ jobs:
         uses: google-github-actions/auth@v0
         with:
           # Replace with your Workload Identity Provider Location
-          workload_identity_provider: "projects/660579660395/locations/global/workloadIdentityPools/gh-pool-mapss/providers/gh-provider-mapss"
+          workload_identity_provider: "projects/1014365600859/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider"
           # Replace with your GitHub Service Account
-          service_account: "github-actions-service-mapss@instagenie-7cc10.iam.gserviceaccount.com"
+          service_account: "github-actions-service-account@speedy-post-400711.iam.gserviceaccount.com"
 
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
@@ -59,17 +59,17 @@ jobs:
         with:
           image: ${{ env.IMAGE_NAME }}
           region: us-central1
-          service: mapss
+          service: app
           flags: --port=8080
 
       # Example of using the output
       - name: Test URL
         run: curl "${{ steps.deploy.outputs.url }}"
       
-      # - name: terraform
-      #   run: |
-      #     cd terraform
-      #     terraform init
-      #     terraform destroy -auto-approve
-      #     terraform apply -auto-approve
+      - name: terraform
+        run: |
+          cd terraform
+          terraform init
+          terraform destroy -auto-approve
+          terraform apply -auto-approve
 

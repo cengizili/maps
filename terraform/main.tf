@@ -1,5 +1,5 @@
 provider "google" {
-  project = "instagenie-7cc10"
+  project = "speedy-post-400711"
 }
 
 
@@ -18,7 +18,7 @@ resource "google_cloud_run_service" "default" {
     spec {
       container_concurrency = 1
       containers {
-        image = "gcr.io/instagenie-7cc10/mapss"
+        image = "gcr.io/speedy-post-400711/app"
         resources {
             limits = {
                 cpu = "2000m" # 1 vCPU
