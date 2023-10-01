@@ -25,7 +25,7 @@ initialize_app(cred, {
     'databaseURL': 'https://instagenie-7cc10-default-rtdb.firebaseio.com/'
 })
 
-bucket = storage.bucket('instagenie-7cc10.appspot.com')
+bucket = storage.bucket('speedy-post-400711.appspot.com')
 
 def extract_alphanumeric(input_string):
     # Use regular expression to find alphanumeric characters
