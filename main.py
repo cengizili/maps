@@ -79,21 +79,21 @@ def retry(max_retries=3, delay=5):
         return wrapper
     return decorator
 
-@app.route("/keyword_search", methods=['POST'])
-@retry(max_retries=3, delay=2)
-def keyword_search():
-    req = request.get_json()
-    # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-    # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-    return GMB.keyword_search(req["listing"], req["keyword"])
+# @app.route("/keyword_search", methods=['POST'])
+# @retry(max_retries=3, delay=2)
+# def keyword_search():
+#     req = request.get_json()
+#     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+#     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
+#     return GMB.keyword_search(req["listing"], req["keyword"])
 
-@app.route("/place_search", methods=['POST'])
-@retry(max_retries=2, delay=2)
-def place_search():
-    req = request.get_json()
-    # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-    # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-    return GMB.place_search(req["zoomUrl"], req["placeLimit"])
+# @app.route("/place_search", methods=['POST'])
+# @retry(max_retries=2, delay=2)
+# def place_search():
+#     req = request.get_json()
+#     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
+#     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
+#     return GMB.place_search(req["zoomUrl"], req["placeLimit"])
             
 with SB(locale_code="US", headed=False,) as sb:
     GMB = GoogleMapsBot(sb)
