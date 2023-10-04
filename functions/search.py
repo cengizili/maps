@@ -73,7 +73,7 @@ class Search:
         if self.limit < self.load:
             self.unique_listings = [l for idx, l in enumerate(self.unique_listings) if (idx+1)*len(self.keywords) <= self.limit]
         
-        self.services = [f"https://serp-{i}-pfoymczp4q-uc.a.run.app" for i in range(self.maxServices) for j in range(self.maxInstances)]
+        self.services = [f"https://serp-{i}-g7tfezwnhq-uc.a.run.app" for i in range(self.maxServices) for j in range(self.maxInstances)]
         self.data_zip = {idx: {"listing": l, "keyword": k, "service": self.services[idx], "logDate": self.logDate} for idx, (l, k) in enumerate(list(itertools.product(self.unique_listings, self.keywords)))}
     
     def getPlaces(self):
@@ -88,14 +88,14 @@ class Search:
             for idx, z in enumerate(self.zoomLevels):
                 for k in self.keywords:
                     k_sorted = sorted([self.match(l, self.places)[0] for l in self.local_results[idx] if self.match(l, self.places)], key=lambda x: x["keywords"][k], reverse=True)
-                    if self.match(p, k_sorted): p["rankings"].update({z: {k: self.match(p, k_sorted)[1]+1}})
+                    if self.match(p, k_sorted): p["rankings"].update({z: {k: self.match(p, k_sorted)[1]}})
                     local_match = self.match(p, self.local_results[idx])
                     if p["place_id"]==self.pivot["place_id"]:
                         self.pivot = p
                     elif local_match:
                         p["rankings"][z].update({"listing": local_match[1]})
         
-        self.places_modified = {z:{self.match(l, self.places)[0]["title"]: self.match(l, self.places)[0] for l in self.local_results[idx] if self.match(l, self.places) and l["place_id"]!=self.pivot["place_id"]} for idx, z in enumerate(self.zoomLevels)}
+        self.places_modified = {z:{idx2: self.match(l, self.places)[0] for idx2, l in enumerate(self.local_results[idx]) if self.match(l, self.places) and l["place_id"]!=self.pivot["place_id"]} for idx, z in enumerate(self.zoomLevels)}
 
             
     def run(self):
