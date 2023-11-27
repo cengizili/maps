@@ -7,7 +7,7 @@ import time
 from serpapi import GoogleSearch
 
 
-client = Client(key = "AIzaSyCCJMgAPVB74U_cWnhXsqTtU6x5xCUYuKs")
+client = Client(key = "XXX")
 
 def extractor(share_url):
     r = requests.head(share_url, allow_redirects=True)    
