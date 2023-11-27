@@ -22,10 +22,10 @@ app = Flask(__name__)
 cred = credentials.Certificate('firebase_credentials.json')
 
 initialize_app(cred, {
-    'databaseURL': 'https://instagenie-7cc10-default-rtdb.firebaseio.com/'
+    'databaseURL': 'https://XXX-default-rtdb.firebaseio.com/'
 })
 
-bucket = storage.bucket('speedy-post-400711.appspot.com')
+bucket = storage.bucket('XXX.appspot.com')
 
 def extract_alphanumeric(input_string):
     # Use regular expression to find alphanumeric characters
@@ -49,7 +49,7 @@ async def post(data, url, endpoint):
             return json.loads(response.text)
 
 def log(text):
-    asyncio.run(post(text, "https://logger-pfoymczp4q-uc.a.run.app", ""))
+    asyncio.run(post(text, "https://logger-XXX-uc.a.run.app", ""))
 
 def retry(max_retries=3, delay=5):
     def decorator(func):
@@ -79,27 +79,16 @@ def retry(max_retries=3, delay=5):
         return wrapper
     return decorator
 
-# @app.route("/keyword_search", methods=['POST'])
-# @retry(max_retries=3, delay=2)
-# def keyword_search():
-#     req = request.get_json()
-#     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-#     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-#     return GMB.keyword_search(req["listing"], req["keyword"])
-
-# @app.route("/place_search", methods=['POST'])
-# @retry(max_retries=2, delay=2)
-# def place_search():
-#     req = request.get_json()
-#     # print(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']}")
-#     # log(f"Keyword: {req['keyword']} search for Place: {req['listing']['name']} in {request.url}")
-#     return GMB.place_search(req["zoomUrl"], req["placeLimit"])
+@app.route("/keyword_search", methods=['POST'])
+@retry(max_retries=3, delay=2)
+def keyword_search():
+    req = request.get_json()
+    return GMB.keyword_search(req["listing"], req["keyword"])
             
 with SB(locale_code="US", headed=False,) as sb:
     GMB = GoogleMapsBot(sb)
     app.run(host="0.0.0.0", port=8080)
 
-# proxy="cengizhanili:UcVwSRNwUM@185.228.195.95:50100" 
         
         
 

@@ -1,0 +1,5 @@
+firebase_functions~=0.1.0
+googlemaps==4.10.0
+httpx==0.25.0
+firebase-admin==6.1.0
+google-search-results==2.4

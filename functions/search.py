@@ -62,7 +62,7 @@ class Search:
         print(idxs)
         return [listings[idx] for idx in idxs]
 
-    def getSerpPlaces(self):
+    def getRawPlaces(self):
         self.local_results, self.urls = gmaps.get_locals(self.shareUrl, self.nearbyQuery, self.zoomLevels, self.placeLimit)
         self.pivot = self.local_results[0][0]
         self.unique_listings = list({l["place_id"]:l for l in [i for sub in self.local_results for i in sub]}.values())
@@ -97,8 +97,7 @@ class Search:
         
         self.places_modified = {z:{idx2: self.match(l, self.places)[0] for idx2, l in enumerate(self.local_results[idx]) if self.match(l, self.places) and l["place_id"]!=self.pivot["place_id"]} for idx, z in enumerate(self.zoomLevels)}
 
-            
     def run(self):
-        self.getSerpPlaces()
+        self.getRawPlaces()
         self.scaleData()
         self.getPlaces()
