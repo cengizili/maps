@@ -1,5 +1,5 @@
 ### PARALLEL BROWSER WEB SCRAPING USING SELENIUMBASE, FLASK, GOOGLE CLOUD, and TERRAFORM
-Here's an implementation for building a scalable application to scrape Google Maps Places by running parallel browsers. 
+Here's an implementation for building a scalable application to do keyword search on Google Maps Places by running parallel browsers. 
 
 Let's start with `main.py`, we're starting a new browser session as well as initiating our flask server in the with statement.
 This trick is useful because we don't need to create a new browser session for each requests, consecutive requests will be handled on the same browser session.
